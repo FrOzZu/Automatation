@@ -2,7 +2,7 @@ import math
 
 def square(side):
     if not isinstance(side, int):
-        side = math.ceil(side)
+     math.ceil((side*side))
     
     area = side * side
     return area
