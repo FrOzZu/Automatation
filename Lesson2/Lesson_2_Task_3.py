@@ -1,13 +1,18 @@
 import math
 
 def square(side):
-    if not isinstance(side, int):
-     math.ceil((side*side))
-    
     area = side * side
+    
+    # Если сторона не целая, округляем площадь вверх
+    if not side.is_integer():
+        area = math.ceil(area)
+    
     return area
 
-side_string = input("Введите длину стороны квадрата: ")
-side_length = float(side_string)
-result = square(side_length)
-print(f"Площадь квадрата со стороной {side_length} равняется {result}")
+try:
+    side_string = input("Введите длину стороны квадрата: ")
+    side_length = float(side_string)
+    result = square(side_length)
+    print(f"Площадь квадрата со стороной {side_length} равняется {result}")
+except ValueError as e:
+    print(f"Ошибка: {e}")
