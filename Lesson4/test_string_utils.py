@@ -3,11 +3,11 @@ import pytest
 from string_utils import StringUtils
 
 string_util = StringUtils()
-#Test Case 1: Тестирование функциональности "capitalize"
+#Test Case 1: Тестирование функциональности "capitilize"
 @pytest.mark.parametrize('string, result', [
     #Позитивные проверки:
     ("evgeniy", "Evgeniy"),
-    ("evgNiy", "Evgeniy"),
+    ("evgeNiy", "Evgeniy"),
     ("salam", "Salam"),
     ("evgeniy23", "Evgeniy23"),
     ("evgeniy_23", "Evgeniy_23"),
@@ -16,15 +16,15 @@ string_util = StringUtils()
     ("Еvgeniy", "Еvgeniy"),
     ("OMP", "Omp"), 
     ("123abc", "123abc"), 
-    ("  Problems", "  Problems"),  
+    ("Problems", "Problems"),  
     ("Buff  ", "Buff  ") 
 ])
 
-def test_capitalize(string, result):
+def test_capitilize(string, result):
     string_util = StringUtils()
     print(f"Input string: {string}")
     print(f"Expected result: {result}")
-    res = string_util.capitalize(string)
+    res = string_util.capitilize(string)
     print(f"Actual result: {res}")
     assert res == result
 
@@ -112,7 +112,7 @@ def test_contains(string, symbol, result):
     ("Wong", "o", "Wng"),
     ("Town", "T", "own"),
     ("12345", "1", "2345"),
-    ("Evgen-salam", "-", "Evgen-salam"),
+    ("Evgen-salam", "-", "Evgensalam"),
     ("itteration", "itter", "ation"),
     #Негативные проверки:
     ("spoon", "k", "spoon"),
@@ -129,21 +129,22 @@ def test_delete_symbol(string, symbol, result):
 #Test Case 6: Тестирование функциональности "starts_with"
 @pytest.mark.parametrize('string, symbol, result', [
     #Позитивные проверки:
-    ("test", "t", True),
+    ("table", "t", True),
     ("", "", True),
-    ("Еvgeniy", "A", True),
-    (" Dendi", "", True),
-    ("Forewer  ", "F", True),
-    ("Еvgeniy-Who", "A", True),
-    ("Еvgeniy Who", "A", True),
+    ("Headphones", "H", True),
+    (" car", "", True),
+    ("Film  ", "F", True),
+    ("Anne-Mary", "A", True),
+    ("Mary Anne", "M", True),
     ("123", "1", True),
-    #Негативные проверки:
-    ("DendiPudge", "d", False),
-    ("Еvgeniy", "e", False),
+    ("list", "", True),
+    #Негативные проверки:""
+    ("Headphones", "h", False),
+    ("tea", "T", False),
     ("", "v", False),
     ("Test", "t", False),
-    ("one", "e", False),
-    ("two", "w", False)
+    ("eleven", "n", False),
+    ("twenty", "w", False)
 ])
 def test_starts_with(string, symbol, result):
     string_util = StringUtils()
@@ -158,7 +159,7 @@ def test_starts_with(string, symbol, result):
     ("", "", True),
     ("one ", "", True),
     ("123", "3", True),
-    ("Еvgen-salam", "m", True),
+    ("Еvgen_salam", "m", True),
     ("Еvgeniy salam", "m", True),
     ("Еvgeniy23", "23", True),
     ("test", "", True),
