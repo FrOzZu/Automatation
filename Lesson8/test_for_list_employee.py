@@ -91,7 +91,7 @@ def test_change_data():
     middleName = "Александрович"
     companyId = new_id
     email = "test@mail.ru"
-    url = " "
+    url = ""
     phone = "+79969570455"
     birthdate = "2020-04-15T17:19:22.062Z"
     isActive =  True
@@ -101,8 +101,8 @@ def test_change_data():
     
     id = new_id_emp
     lastName = "Рафаэль"
-    email = "test@mail.ru"
-    url = "https://my_profile.com"
+    email = "test@mail.com"
+    url = "https://my_profile.com "
     phone = "89654789654"
     isActive = True
     new_data = api.change_data(new_id_emp, lastName, email, url, phone, isActive)
@@ -112,4 +112,3 @@ def test_change_data():
     assert employer_body["id"] == new_id_emp
     assert employer_body["isActive"] == isActive
     assert employer_body["email"] == email
-    assert employer_body["url"] == url

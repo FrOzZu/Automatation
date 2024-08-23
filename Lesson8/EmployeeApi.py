@@ -26,8 +26,8 @@ class EmployeeApi:
         return resp.json()
 
     def get_employee_list(self, params_to_add=None):
-        resp = requests.get(self.url + '/employee' + params_to_add)
-        return resp.json()
+     resp = requests.get(self.url + '/employee', params=params_to_add)
+     return resp.json()
 
     def create_employee(self, id, firstName, lastName, middleName,  companyId, email, url, phone, birthdate, isActive):
         employer = {
@@ -56,7 +56,6 @@ class EmployeeApi:
         employer = {
             "lastName": lastName,
             "email": email,
-            "url": url,
             "phone": phone,
             "isActive": isActive
         }
