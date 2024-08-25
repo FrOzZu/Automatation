@@ -1,8 +1,8 @@
 import requests
 import pytest
-import psycopg_binary
+import psycopg2
 from EmployeeApi import EmployeeApi
-from EmployeeDBeaver import EmployerTable
+from EmployeDB import EmployerTable
 
 api = EmployeeApi("https://x-clients-be.onrender.com")
 db = EmployerTable("postgresql://x_clients_user:95PM5lQE0NfzJWDQmLjbZ45ewrz1fLYa@dpg-cqsr9ulumphs73c2q40g-a.frankfurt-postgres.render.com/x_clients_db_fxd0")
@@ -20,20 +20,20 @@ def test_get_list():
 
 
 def test_add_new_employer():
-    db.create_company('DBCooper')
-    max_id_c = db.get_max_id_comp()
+    db.create_company('Моя компания')
+    company_id = db.get_max_id_comp()
 
-    api_result_b = api.get_employee_list(f'?company={max_id_c}')
-    db_result_b = db.select_employers(max_id_c)
+    api_result_b = api.get_employee_list(f'?company={company_id}')
+    db_result_b = db.select_employers(company_id)
 
-    f_name = 'DB'
-    l_name = 'Cooper'
+    f_name = 'Иван'
+    l_name = 'Петров'
     phone = '+79969598584'
 
-    db.create_employer(max_id_c, f_name, l_name, phone)
+    db.create_employer(company_id, f_name, l_name, phone)
 
-    api_result_a = api.get_employee_list(f'?company={max_id_c}')
-    db_result_a = db.select_employers(max_id_c)
+    api_result_a = api.get_employee_list(f'?company={company_id}')
+    db_result_a = db.select_employers(company_id)
 
     assert len(api_result_b) == len(db_result_b)
     assert len(api_result_a) == len(db_result_a)
@@ -43,18 +43,18 @@ def test_add_new_employer():
             assert employee["first_name"] == f_name
             assert employee["last_name"] == l_name
             assert employee["phone"] == phone
-            assert employee["company_id"] == max_id_c
+            assert employee["company_id"] == company_id
 
-    db.clear_table_employers(max_id_c)
-    db.delete_company(max_id_c)
+    db.clear_table_employers(company_id)
+    db.delete_company(company_id)
 
 
 def test_one_employer():
-    db.create_company('DBCooper')
+    db.create_company('Моя компания')
     max_id_c = db.get_max_id_comp()
 
-    name_emp = 'DB'
-    la_name = 'Cooper'
+    name_emp = 'Иван'
+    la_name = 'Петров'
     phone_num = '+79969598584'
 
     db.create_employer(max_id_c, name_emp, la_name, phone_num)
@@ -71,11 +71,11 @@ def test_one_employer():
 
 
 def test_change_data():
-    db.create_company('DBCooper')
+    db.create_company('Моя компания')
     max_id_c = db.get_max_id_comp()
 
-    name_emp = 'DB'
-    la_name = 'Cooper'
+    name_emp = 'Иван'
+    la_name = 'Петров'
     phone_num = '+79969598584'
 
     db.create_employer(max_id_c, name_emp, la_name, phone_num)
@@ -83,7 +83,7 @@ def test_change_data():
     
 
     id = max_id_e
-    last_name = 'Cooper'
+    last_name = 'Белов'
     email = 'test@mail.com'
     url = 'https://my_profile.com'
     phone = '89654789654'
@@ -103,12 +103,12 @@ def test_change_data():
 
 
 def test_delete_company_and_employers():
-    name = 'DBCooper'
+    name = 'Моя компания'
     db.create_company(name)
     max_id_c = db.get_max_id_comp()
 
-    name_emp = 'DB'
-    la_name = 'Cooper'
+    name_emp = 'Иван'
+    la_name = 'Петров'
     phone_num = '+79969598584'
 
     db.create_employer(max_id_c, name_emp, la_name, phone_num)

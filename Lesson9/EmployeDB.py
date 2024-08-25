@@ -1,7 +1,7 @@
 from typing import Any
 from sqlalchemy import create_engine
-from sqlalchemy import text
-import psycopg_binary
+from sqlalchemy.sql import text
+import psycopg2
 import sqlalchemy
 
 
@@ -12,8 +12,7 @@ class EmployerTable:
         'max_id_employee': text('select MAX(id) from employee where company_id=(:id_comp)'),
         'select_employee': text('select * from employee where company_id =(:company_id)'),
         'delete_by_id': text('delete from company where id =(:id_to_delete)'),
-        'create_employee': text(
-        'insert into employee(company_id, first_name, last_name, phone) values(:company_id, :first_name, :last_name, :phone)'),
+        'create_employee': text('insert into employee(company_id, first_name, last_name, phone) values(:company_id, :first_name, :last_name, :phone)'),
         'clear_table': text('DELETE FROM employee  where company_id =(:id_clear)'),
         'select_by_id': text('select * from employee where id =(:select_id)')
     }
