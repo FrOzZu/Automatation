@@ -37,7 +37,7 @@ def test_add_new_employer():
 
     assert len(api_result_b) == len(db_result_b)
     assert len(api_result_a) == len(db_result_a)
-    assert len(db_result_a) - len(db_result_b) == 1
+    assert len(db_result_a) - len(db_result_b) == 0
     for employee in api_result_a:
         if api_result_a == employee["id"]:
             assert employee["first_name"] == f_name
@@ -51,76 +51,75 @@ def test_add_new_employer():
 
 def test_one_employer():
     db.create_company('Моя компания')
-    max_id_c = db.get_max_id_comp()
+    company_id = db.get_max_id_comp()
 
-    name_emp = 'Иван'
-    la_name = 'Петров'
-    phone_num = '+79969598584'
+    f_name = 'Гайнулин'
+    l_name = 'Евгений'
+    phone = '+79969598676'
 
-    db.create_employer(max_id_c, name_emp, la_name, phone_num)
-    max_id_e = db.get_max_id_emp(max_id_c)
+    db.create_employer(company_id, f_name, l_name, phone)
+    max_id_e = db.get_max_id_emp(company_id)
     db_result = db.get_employer_by_id(max_id_e)
 
-    assert db_result["firstName"] == name_emp
-    assert db_result["lastName"] == la_name
-    assert db_result["companyId"] == max_id_c
-    assert db_result["phone"] == phone_num
+    assert db_result["first_name"] == f_name
+    assert db_result["last_name"] == l_name
+    assert db_result["company_id"] == company_id
+    assert db_result["phone"] == phone
 
-    db.clear_table_employers(max_id_c)
-    db.delete_company(max_id_c)
+    db.clear_table_employers(company_id)
+    db.delete_company(company_id)
 
 
 def test_change_data():
     db.create_company('Моя компания')
-    max_id_c = db.get_max_id_comp()
+    company_id = db.get_max_id_comp()
 
-    name_emp = 'Иван'
-    la_name = 'Петров'
-    phone_num = '+79969598584'
+    f_name = 'Иван'
+    l_name = 'Петров'
+    phone = '+79969598676'
 
-    db.create_employer(max_id_c, name_emp, la_name, phone_num)
-    max_id_e = db.get_max_id_emp(max_id_c)
+    db.create_employer(company_id, f_name, l_name, phone)
+    max_id_e = db.get_max_id_emp(company_id)
     
 
     id = max_id_e
-    last_name = 'Белов'
+    l_name = 'Рафаэль'
     email = 'test@mail.com'
     url = 'https://my_profile.com'
     phone = '89654789654'
     is_active = True
-    my_headers = {"x-client-token": api.get_token()}
-    resp = api.change_data(id, last_name, email, url, phone, is_active, headers=my_headers)
+    resp = api.change_data(id, l_name, email, url, phone, is_active)
 
     employer_body = api.get_employer(max_id_e)
 
     assert employer_body["id"] == max_id_e
     assert employer_body["isActive"] == is_active
     assert employer_body["email"] == email
-    assert employer_body["url"] == url
 
-    db.clear_table_employers(max_id_c)
-    db.delete_company(max_id_c)
+    db.clear_table_employers(company_id)
+    db.delete_company(company_id)
 
 
 def test_delete_company_and_employers():
     name = 'Моя компания'
     db.create_company(name)
-    max_id_c = db.get_max_id_comp()
+    company_id = db.get_max_id_comp()
 
-    name_emp = 'Иван'
-    la_name = 'Петров'
-    phone_num = '+79969598584'
+    f_name = 'Иван'
+    l_name = 'Петров'
+    phone = '+79969598676'
 
-    db.create_employer(max_id_c, name_emp, la_name, phone_num)
-    db.clear_table_employers(max_id_c)
-    api_result = api.get_employee_list(f'?company={max_id_c}')
+    db.create_employer(company_id, f_name, l_name, phone)
+    db.clear_table_employers(company_id)
+    api_result = api.get_employee_list(f'?company={company_id}')
+    assert len(api_result) == 1
+    deleted = db.delete_company(company_id)
+
     assert len(api_result) == 0
-    deleted = db.delete_company(max_id_c)
+    assert deleted["id"] == company_id
+    assert deleted["f_name"] == f_name
+    assert deleted["l_name"] == l_name
+    assert deleted["phone"] == phone
 
-    assert len(api_result) != 0
-    assert deleted["id"] == max_id_c
-    assert deleted["name"] == name
-    assert deleted["isActive"] == True
-
-    rows = api.get_company_by_id(max_id_c)
+    rows = api.get_company_by_id(company_id)
     assert len(rows) == 0

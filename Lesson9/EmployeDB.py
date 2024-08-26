@@ -1,6 +1,6 @@
 from typing import Any
 from sqlalchemy import create_engine
-from sqlalchemy.sql import text
+from sqlalchemy import text
 import psycopg2
 import sqlalchemy
 
@@ -52,9 +52,9 @@ class EmployerTable:
 
     def create_employer(self, company_id: int, f_name: str, l_name: str, phone: str):
         with self.db.connect() as connection:
-            result = connection.execute(self.scripts["create_employee"],
-                                        {"company_id": company_id, "first_name": f_name, "last_name": l_name, "phone": phone})
-            return result.fetchall()
+            connection.execute(self.scripts["create_employee"],
+                               {"company_id": company_id, "first_name": f_name, "last_name": l_name, "phone": phone})
+
 
     def clear_table_employers(self, id):
         with self.db.connect() as connection:
