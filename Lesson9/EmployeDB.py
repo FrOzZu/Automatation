@@ -1,6 +1,6 @@
 from typing import Any
 from sqlalchemy import create_engine
-from sqlalchemy import text
+from sqlalchemy.sql import text
 import psycopg2
 import sqlalchemy
 
@@ -23,7 +23,7 @@ class EmployerTable:
     def create_company(self, name: str):
         with self.db.connect() as connection:
             result = connection.execute(self.scripts["insert_new"], {"new_name": name})
-
+            connection.commit()
             return result
 
     def get_max_id_comp(self):
@@ -38,7 +38,7 @@ class EmployerTable:
 
             return result
 
-    def select_employers(self, id):
+    def select_employers(self, id,):
         with self.db.connect() as connection:
             result = connection.execute(self.scripts["select_employee"], {"company_id": id}).fetchall()
 
@@ -52,8 +52,9 @@ class EmployerTable:
 
     def create_employer(self, company_id: int, f_name: str, l_name: str, phone: str):
         with self.db.connect() as connection:
-            connection.execute(self.scripts["create_employee"],
-                               {"company_id": company_id, "first_name": f_name, "last_name": l_name, "phone": phone})
+            connection.execute(self.scripts["create_employee"], 
+            {"company_id": company_id, "first_name": f_name, "last_name": l_name, "phone": phone})
+            connection.commit()
 
 
     def clear_table_employers(self, id):
