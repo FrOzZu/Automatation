@@ -21,7 +21,6 @@ class CartPage:
         self._driver.find_element(By.CSS_SELECTOR, "#last-name").send_keys(l_name)
         self._driver.find_element(By.CSS_SELECTOR, "#postal-code").send_keys(post_code)
         self._driver.find_element(By.CSS_SELECTOR, "#continue").click()
-
     @allure.step("Общая стоимость записывается текстом в переменную txt")
     def total_price(self) ->str:
         txt = self._driver.find_element(

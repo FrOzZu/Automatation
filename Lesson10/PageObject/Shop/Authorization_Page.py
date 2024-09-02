@@ -9,7 +9,6 @@ class AuthorizationPage:
         self._driver.get("https://www.saucedemo.com/")
         self._driver.implicitly_wait(4)
         self._driver.maximize_window()
-
     @allure.step("Авторизация пользователя {name}:{password}")   
     def auth(self, name: str, password: str)-> None:
         self._driver.find_element(By.CSS_SELECTOR, "#user-name").send_keys(name)

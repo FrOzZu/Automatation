@@ -6,7 +6,6 @@ from selenium.webdriver.support import expected_conditions as EC
 class MainPage:
     def __init__(self, browser)->None:
         self._driver = browser
-
     @allure.step("Добавление товара в корзину")    
     def add_items(self) -> str:
         waiter = WebDriverWait(self._driver,5)
